@@ -1,0 +1,114 @@
+---
+id: cell-edit
+title: 可编辑单元格
+---
+
+通过使用`features.cellEdit`并配置列属性`editable`来启用编辑单元格功能。[完整示例](/examples/cell-edit)
+
+### 使用方式
+
+- `type`为`select`的列，依赖antd的下拉框组件，使用之前需要先设置 `pipeline.ctx.components.Select`
+- 按照目前交互逻辑，编辑单元格同时需要选中当前行，所以在该feature中已经提前启用了`features.singleSelect`。
+
+```ts
+/** 可编辑单元格相关属性 */
+export interface EditableOpts {
+  // 编辑类型，用于呈现不同控件
+  type: string
+  // 选项列表，用于下拉框option展示
+  options?: any
+  // 多行编辑
+  multiline?: boolean
+  // 日期格式
+  format?: string
+  // 提示话术，用于提示校验不通过
+  tip?: string
+  // 校验器
+  validate?: Function | RegExp | any
+}
+```
+```jsx
+const colmuns = [
+  {
+    code: 'title', name: '标题', width: 150,
+    editable: {
+      type: 'input',
+      tip: '标题不能为空',
+      validate: value => !!value
+    }
+  },
+  {
+    code: 'enable', name: '启用', width: 100, align: 'center',
+    editable: {
+      type: 'select',
+      options: [
+        { label: '否', value: 0 },
+        { label: '是', value: 1 },
+      ],
+      tip: '请至少选择一项'
+    }
+  },
+]
+pipeline.use(
+  features.cellEdit({
+    /**
+     * 每当单元格数据发生变化时触发该回调
+     * @param row         行数据（对应的列已经更新为新值，恒等于value）
+     * @param rowIndex    行索引
+     * @param column      单元格对应的列信息
+     * @param columnIndex 列索引
+     * @param value       单元格最新值
+     */
+    onChange ({ row, rowIndex, column, columnIndex, value }) {
+      // do submit
+    }
+  })
+)
+```
+
+
+### 示例
+
+```jsx live
+function 提示信息() {
+  const columns = [
+    { code: 'id', name: '编号', width: 100 },
+    {
+      code: 'title',
+      name: '标题',
+      width: 150,
+      editable: {
+        type: 'input',
+        tip: '标题不能为空',
+        validate: value => !!value
+      }
+    },
+    {
+      code: 'dest',
+      name: '所在地',
+      width: 100,
+      align: 'center',
+      editable: {
+        type: 'select',
+        options: [
+          { label: '云南大理', value: 0 },
+          { label: '杭州千岛湖', value: 1 },
+        ],
+        tip: '请至少选择一项'
+      }
+    },
+  ]
+  const dataSource = assets.biz.dataSource4
+
+  const pipeline = useTablePipeline({ components: antd })
+    .primaryKey('id')
+    .input({ dataSource, columns })
+    .use(features.cellEdit({
+      onChange (payload) {
+        console.log(payload)
+      }
+    }))
+
+  return <BaseTable {...pipeline.getProps()} />
+}
+```

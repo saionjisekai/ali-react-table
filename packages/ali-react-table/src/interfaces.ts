@@ -31,6 +31,9 @@ export interface ArtColumnStaticPart {
 
   /** 功能开关 */
   features?: { [key: string]: any }
+
+  /** 可编辑单元格元数据 */
+  editable?: EditableOpts
 }
 
 export interface ArtColumnDynamicPart {
@@ -50,6 +53,22 @@ export interface ArtColumnDynamicPart {
 export interface ArtColumn extends ArtColumnStaticPart, ArtColumnDynamicPart {
   /** 该列的子节点 */
   children?: ArtColumn[]
+}
+
+/** 可编辑单元格相关属性 */
+export interface EditableOpts {
+  // 编辑类型，用于呈现不同控件
+  type: string
+  // 选项列表，用于下拉框option展示
+  options?: any
+  // 多行编辑
+  multiline?: boolean
+  // 日期格式
+  format?: string
+  // 提示话术，用于提示校验不通过
+  tip?: string
+  // 校验器
+  validate?: Function | RegExp | any
 }
 
 /** SpanRect 用于描述合并单元格的边界

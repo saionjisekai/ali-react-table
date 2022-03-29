@@ -28,6 +28,7 @@ module.exports = {
             'pipeline/features/auto-row-span',
             'pipeline/features/tips',
             'pipeline/features/column-resize',
+            'pipeline/features/cell-edit',
             'pipeline/features/filter',
           ],
         },

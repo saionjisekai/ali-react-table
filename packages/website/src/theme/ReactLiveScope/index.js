@@ -10,12 +10,14 @@ import * as fusion from '@alifd/next'
 import * as assets from '../../assets'
 import * as docHelpers from './docHelpers'
 import { WebsiteBaseTable } from 'assets/WebsiteBaseTable'
+import * as antd from 'antd'
 
 const ReactLiveScope = {
   React,
   ...React,
   fusion,
   ...fusion,
+  antd,
   styled,
   cx,
   art,

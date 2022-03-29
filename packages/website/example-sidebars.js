@@ -5,6 +5,7 @@ module.exports = {
     'pipeline',
     'big-data',
     'scroll-to',
+    'cell-edit',
     'theme',
     {
       type: 'category',
